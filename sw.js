@@ -1,6 +1,6 @@
 // Service worker: l'app si apre anche senza rete.
 // Cambia il numero di versione ad ogni aggiornamento dei file per forzare il rinnovo della cache.
-const VERSION = "turni-v3";
+const VERSION = "turni-v4";
 const FB = "https://www.gstatic.com/firebasejs/10.14.1/";
 const FB_FILES = ["firebase-app.js", "firebase-auth.js", "firebase-firestore.js"].map(f => FB + f);
 const SHELL = [
@@ -22,7 +22,7 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k)));
+    await Promise.all(keys.filter(k => k.startsWith("turni-") && k !== VERSION).map(k => caches.delete(k)));
     await self.clients.claim();
   })());
 });
