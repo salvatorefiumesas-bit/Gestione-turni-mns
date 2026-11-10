@@ -1,12 +1,12 @@
 // Service worker: l'app si apre anche senza rete.
 // Cambia il numero di versione ad ogni aggiornamento dei file per forzare il rinnovo della cache.
-const VERSION = "turni-v2";
+const VERSION = "turni-v3";
 const FB = "https://www.gstatic.com/firebasejs/10.14.1/";
 const FB_FILES = ["firebase-app.js", "firebase-auth.js", "firebase-firestore.js"].map(f => FB + f);
 const SHELL = [
   "./", "index.html", "sync.js", "firebase-config.js", "manifest.webmanifest",
-  "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-192.png",
-  "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png", "icons/favicon-16.png"
+  "icon-192.png", "icon-512.png", "icon-maskable-192.png",
+  "icon-maskable-512.png", "apple-touch-icon.png", "favicon-32.png", "favicon-16.png"
 ];
 
 self.addEventListener("install", e => {
