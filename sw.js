@@ -1,6 +1,6 @@
 // Service worker: l'app si apre anche senza rete.
 // Cambia il numero di versione ad ogni aggiornamento dei file per forzare il rinnovo della cache.
-const VERSION = "turni-v4";
+const VERSION = "turni-v5";
 const FB = "https://www.gstatic.com/firebasejs/10.14.1/";
 const FB_FILES = ["firebase-app.js", "firebase-auth.js", "firebase-firestore.js"].map(f => FB + f);
 const SHELL = [

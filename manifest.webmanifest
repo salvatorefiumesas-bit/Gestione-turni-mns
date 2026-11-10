@@ -1,20 +1,43 @@
 {
-  "name": "Manutenzione Stradale – Gestione Turni",
-  "short_name": "Turni",
+  "name": "Gestione Turni MNS – Manutenzione Stradale",
+  "short_name": "Turni MNS",
   "description": "Generatore turni mensile – Manutenzione Stradale, San Giovanni e Staffetta",
   "lang": "it",
-  "id": "/Gestione-turni-mns/",
-  "start_url": "/Gestione-turni-mns/",
+  "id": "turni-mns-app",
+  "start_url": "/Gestione-turni-mns/?source=pwa",
   "scope": "/Gestione-turni-mns/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#14263a",
   "theme_color": "#14263a",
-  "categories": ["business", "productivity"],
+  "categories": [
+    "business",
+    "productivity"
+  ],
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
