@@ -223,7 +223,7 @@ body{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))}
   <div class="field"><label for="month">MESE</label><select id="month"></select></div>
   <div class="field"><label for="year">ANNO</label><input id="year" type="number" min="2024" max="2040" value="2026" style="width:100px"></div>
   <div class="field"><label>FESTIVI DEL MESE (automatici)</label><span id="autohol" class="note" style="margin:0;padding:.6em 0;font-size:.9em"></span></div>
-  <div class="field"><label for="wmode">NOTTI WEEKEND</label><select id="wmode"><option value="1">1 sabato + 1 domenica</option><option value="2" selected>Almeno 2 (sab/dom indifferenti)</option><option value="3">Almeno 1</option></select></div>
+  <div class="field"><label for="wmode">NOTTI WEEKEND</label><select id="wmode"><option value="1">1 sabato + 1 domenica</option><option value="2">Almeno 2 (sab/dom indifferenti)</option><option value="3">Almeno 1</option><option value="4" selected>Almeno 2, la 3ª a rotazione (2 sab + 1 dom o 2 dom + 1 sab)</option></select></div>
   <div class="field"><label for="lastnight">NOTTE ULTIMO GIORNO MESE PREC. (opz.)</label><input id="lastnight" type="text" placeholder="cognomi separati da virgola" style="width:220px"></div>
   </div></div>
   <div class="group"><div class="gt">Generazione</div><div class="row">
@@ -356,17 +356,18 @@ function solveNights(dates,active,prev,cin,fx,T,wm){
   shuffle(dom).slice(0,Math.max(0,NIGHTS-cnt)).forEach(d=>{row[d]=1;(isSG?sgCnt:stCnt)[d]++;});
   n.push(row);
  }
+ const pmax=Math.max(...prev.slice(0,NS));
  function wcost(row,w){
-  let c=0,sat=0,sun=0,free=0,freeSat=0;const f=fx[w];
+  let c=0,sat=0,sun=0,hol=0,free=0,freeSat=0;const f=fx[w];
   if(cin.c1[w]&&row[0]){c+=cin.c2[w]?10:2;if(row[1])c+=10;}
   for(let d=0;d<D;d++){
    const nn=row[d],pn=d>0?row[d-1]:cin.c1[w],autoR=!nn&&pn&&f[d]==="";
    if(nn&&d+2<D&&row[d+1]&&row[d+2])c+=10;
    if(nn&&d+1<D&&(f[d+1]==="M"||f[d+1]==="S"))c+=10;
-   if(nn){if(dates[d].sat)sat++;if(dates[d].sun)sun++;}
+   if(nn){if(dates[d].sat)sat++;if(dates[d].sun)sun++;if(wm===4&&dates[d].hol&&!dates[d].sat&&!dates[d].sun)hol++;}
    if(!nn&&!autoR&&f[d]===""){if(!dates[d].red)free++;if(dates[d].sat)freeSat=1;}
   }
-  if(wm===1){if(!sat)c+=10;if(!sun)c+=10;}else c+=10*Math.max(0,(wm===2?2:1)-sat-sun);
+  if(wm===1){if(!sat)c+=10;if(!sun)c+=10;}else if(wm===4){const tot=sat+sun+hol;c+=10*Math.max(0,2-tot);if(w<NS)c+=(4+1.2*(pmax-prev[w]))*Math.max(0,3-tot);if(tot>=3&&(sat+hol===0||sun+hol===0))c+=2;}else c+=10*Math.max(0,(wm===2?2:1)-sat-sun);
   if(!manS[w]&&!freeSat)c+=10;
   const needM=T[w]-NIGHTS-(manS[w]||1)-manM[w];
   c+=10*Math.max(0,needM-free);
@@ -374,7 +375,16 @@ function solveNights(dates,active,prev,cin,fx,T,wm){
  }
  // Staffetta: ogni notte 0 oppure almeno 2 operai (nessun massimo); i giorni attivi (max 21) si adattano ai gruppi. SG: 2 se Staffetta lavora, 4 altrimenti.
  const ndSG=st=>st>=2?2:4,exAvg=extra/D;
- const dayCost=(d,sg,st)=>10*Math.max(0,ndSG(st)-sg)+(st===1?10:0)+(st>2?3*(st-2)**2:0)+0.15*(sg-ndSG(st)-exAvg)**2;
+ const nW=dates.filter(x=>x.sat||x.sun||(wm===4&&x.red)).length;
+ let Zn=0,ew=exAvg,er=exAvg;
+ if(wm===4){const baseWE=dates.reduce((p,x,d)=>p+((x.sat||x.sun||x.red)?base[d]:0),0),elig=dates.filter((x,d)=>active[d]&&!x.red).length;
+  Zn=Math.max(0,Math.min(4,elig,Math.ceil((NS*3-(baseWE+Math.max(0,extra)))/2)));
+  const exT=Math.max(0,extra)+2*Zn;
+  ew=nW?Math.max(0,Math.min((NS*3-baseWE)/nW,exT/nW,4)):0;er=D>nW?(exT-ew*nW)/(D-nW):0;}
+ const exD=dates.map(x=>wm===4?((x.sat||x.sun||x.red)?ew:er):exAvg);
+ const zf=(d,sg,st)=>Zn>0&&st>=2&&!dates[d].red&&sg===0?1:0;
+ const dayCost=(d,sg,st)=>{const z=zf(d,sg,st);return (z?0.5:10*Math.max(0,ndSG(st)-sg))+(st===1?10:0)+(st>2?3*(st-2)**2:0)+(z?0:(wm===4&&dates[d].red?0.8:0.15)*(sg-ndSG(st)-exD[d])**2);};
+ let zc=0;for(let d=0;d<D;d++)zc+=zf(d,sgCnt[d],stCnt[d]);
  let wcs=n.map((row,i)=>wcost(row,i));
  const grp=w=>w<NS?0:1,gn=[NS,W-NS],S1=[0,0],S2=[0,0];
  const wk=n.map(row=>{let c=0;for(let d=0;d<D;d++)if(row[d]&&dates[d].red)c++;return c;});
@@ -397,11 +407,12 @@ function solveNights(dates,active,prev,cin,fx,T,wm){
   const afters=ws.map(i=>wcost(n[i],i)),after=afters.reduce((x,y)=>x+y,0);
   const dd=isSG?(d,c)=>dayCost(d,c,stCnt[d]):(d,c)=>dayCost(d,sgCnt[d],c);
   let dc=after-before+dd(a,cn[a]-k)-dd(a,cn[a])+dd(b,cn[b]+k)-dd(b,cn[b]);
+  let dz=0;if(Zn>0){const sA=isSG?sgCnt[a]-k:sgCnt[a],tA=isSG?stCnt[a]:stCnt[a]-k,sB=isSG?sgCnt[b]+k:sgCnt[b],tB=isSG?stCnt[b]:stCnt[b]+k;dz=zf(a,sA,tA)+zf(b,sB,tB)-zf(a,sgCnt[a],stCnt[a])-zf(b,sgCnt[b],stCnt[b]);dc+=10*(Math.max(0,zc+dz-Zn)-Math.max(0,zc-Zn));}
   const dl=(dates[b].red?1:0)-(dates[a].red?1:0),g=grp(w);let fS1=S1[g],fS2=S2[g];
   if(dl!==0){ws.forEach(i=>{const t2=prev[i]+wk[i];fS2+=(t2+dl)*(t2+dl)-t2*t2;fS1+=dl;});dc+=FAIR*((fS2-fS1*fS1/gn[g])-F(g));}
   if(dc<=0||Math.random()<Math.exp(-dc/T0)){
    if(dl!==0){S1[g]=fS1;S2[g]=fS2;ws.forEach(i=>wk[i]+=dl);}
-   ws.forEach((i,j)=>wcs[i]=afters[j]);cn[a]-=k;cn[b]+=k;
+   ws.forEach((i,j)=>wcs[i]=afters[j]);cn[a]-=k;cn[b]+=k;zc+=dz;
   } else {ws.forEach(i=>{n[i][a]=1;n[i][b]=0;});}
  }
  return {n,sgCnt,stCnt};
@@ -430,7 +441,7 @@ function make(st,fx){
  const active=Array(D).fill(false);act.forEach(d=>active[d]=true);
  const ph=prevTotals(y,m),cin=carryIn(y,m,st.last);let best=null,pre=null;
  {const baseD=dates.map((x,d)=>2+(active[d]?0:2)),extra=SG.length*NIGHTS-baseD.reduce((p,c)=>p+c,0);
-  const cap=dates.reduce((p,x,d)=>p+(x.sat||x.sun?baseD[d]:0),0)+Math.max(0,extra),nec=SG.length*(wm===3?1:2);
+  const cap=dates.reduce((p,x,d)=>p+(x.sat||x.sun||(wm===4&&x.red)?baseD[d]:0),0)+Math.max(0,extra)+(wm===4?8:0),nec=SG.length*(wm===3?1:wm===4?2:2);
   if(cap<nec)pre=`Mese non fattibile con i vincoli attuali: servono ${nec} notti SG nei weekend (secondo la regola weekend scelta) ma ne sono disponibili al massimo ${cap}.`;}
  for(let attempt=0;attempt<(pre?4:25);attempt++){
   const s=solveNights(dates,active,ph.tot,cin,fx,T,wm);
@@ -473,14 +484,17 @@ function build(y,m,dates,weekdays,s,active,act,cin,fx,T,wm){
   if(c.work[w]!==T[w])issues.push(`${all[w]}: ${c.work[w]} giornate lavorate, obiettivo ${T[w]}.`);
   if(c.nights[w]<NIGHTS)issues.push(`${all[w]}: ${c.nights[w]} notti invece di ${NIGHTS}.`);
   if(wm===1){if(c.satN[w]<1)issues.push(`${all[w]}: manca una notte di sabato.`);if(c.sunN[w]<1)issues.push(`${all[w]}: manca una notte di domenica.`);}
+  else if(wm===4){if(c.redN[w]<2)issues.push(`${all[w]}: notti nel weekend/festivi insufficienti (${c.redN[w]}).`);}
   else if(c.satN[w]+c.sunN[w]<(wm===2?2:1))issues.push(`${all[w]}: notti nel weekend insufficienti (${c.satN[w]+c.sunN[w]}).`);
  }
  issues.push(...liveIssues(cells,dates,cin));
+ let zc4=0;
  for(let d=0;d<D;d++){
   let sg=0,st=0;for(let w=0;w<W;w++)if(cells[w][d]==="N"){if(w<SG.length)sg++;else st++;}
   const needSG=st>=2?2:4;
   if(st===1)issues.push(`Il ${dates[d].d}: Staffetta ha 1 solo operatore (servono almeno 2 oppure nessuno).`);
-  if(sg<needSG)issues.push(st>=2?`Il ${dates[d].d}: San Giovanni ha meno di 2 operatori in sede.`:`Il ${dates[d].d}: copertura Staffetta da San Giovanni insufficiente (servono 4 notti SG, ce ne sono ${sg}).`);
+  if(sg<needSG&&wm===4&&st>=2&&sg===0&&!dates[d].red){zc4++;if(zc4>4)issues.push(`Il ${dates[d].d}: troppe notti senza San Giovanni (massimo 4 al mese).`);}
+  else if(sg<needSG)issues.push(st>=2?`Il ${dates[d].d}: San Giovanni ha meno di 2 operatori in sede.`:`Il ${dates[d].d}: copertura Staffetta da San Giovanni insufficiente (servono 4 notti SG, ce ne sono ${sg}).`);
  }
  return {y,m,dates,cells,weekdays,issues,activeDays:[...Array(D).keys()].filter(d=>cells.some((r,w)=>w>=SG.length&&r[d]==="N"))};
 }
