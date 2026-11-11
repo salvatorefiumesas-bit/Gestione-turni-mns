@@ -14,9 +14,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>[PROVA] Generatore Turni – Manutenzione Stradale</title>
+<title>Generatore Turni – Manutenzione Stradale</title>
 <style>
-#splash{display:none!important}
 :root{--navy:#14263a;--navy2:#1f3a56;--orange:#f39c12;--green:#58a65c;--blue:#2878bd;--red:#e85d5d;--yellow:#f5d64e;--pink:#ff8585;--bg:#eef1f5;--line:#d9dfe6;--ink:#1d2733;--mut:#5b6877;
 --w1:132px;--w2:54px;--fs:12px;--rh:30px;--cw:30px;--pad:16px}
 @media(min-width:1600px){:root{--w1:176px;--w2:66px;--fs:14px;--rh:38px;--cw:38px;--pad:20px}body{font-size:15px}}
@@ -45,9 +44,9 @@ button.secondary{background:#f1f4f8}button.dark{background:var(--navy2);border-c
 .schedule th{background:#e6ebf1;color:var(--navy);position:sticky;top:0;z-index:2;line-height:1.2}
 .schedule th:first-child,.schedule td:first-child{position:sticky;left:0;z-index:3;background:#f6f8fa;width:var(--w1);min-width:var(--w1);max-width:var(--w1);text-align:left;font-weight:700;padding-left:10px}
 .schedule th:first-child{z-index:5;background:#e6ebf1}
-#schedule th:nth-child(n+2):nth-child(-n+4),#schedule td.cnt{position:sticky;z-index:3;width:var(--w2);min-width:var(--w2);max-width:var(--w2);background:#f6f8fa;font-weight:700}
-#schedule th:nth-child(n+2):nth-child(-n+4){z-index:5;background:#e6ebf1}
-#schedule th:nth-child(2),#schedule td.cnt:nth-child(2){left:var(--w1)}#schedule th:nth-child(3),#schedule td.cnt:nth-child(3){left:calc(var(--w1) + var(--w2))}#schedule th:nth-child(4),#schedule td.cnt:nth-child(4){left:calc(var(--w1) + 2*var(--w2));box-shadow:2px 0 4px #14283b14}
+#schedule th:nth-child(n+2):nth-child(-n+5),#schedule td.cnt{position:sticky;z-index:3;width:var(--w2);min-width:var(--w2);max-width:var(--w2);background:#f6f8fa;font-weight:700}
+#schedule th:nth-child(n+2):nth-child(-n+5){z-index:5;background:#e6ebf1}
+#schedule th:nth-child(2),#schedule td.cnt:nth-child(2){left:var(--w1)}#schedule th:nth-child(3),#schedule td.cnt:nth-child(3){left:calc(var(--w1) + var(--w2))}#schedule th:nth-child(4),#schedule td.cnt:nth-child(4){left:calc(var(--w1) + 2*var(--w2))}#schedule th:nth-child(5),#schedule td.cnt:nth-child(5){left:calc(var(--w1) + 3*var(--w2));box-shadow:2px 0 4px #14283b14}
 .schedule tr:last-child td{border-top:2px solid var(--navy2)}
 .schedule .M{background:#fff}.schedule .N{background:var(--green);color:#0e2410;font-weight:800}.schedule .R{background:var(--blue);color:#fff;font-weight:800}.schedule .F{background:var(--pink);font-weight:800}.schedule .S{background:var(--yellow);font-weight:800}.schedule .red{background:#e64e4e;color:#fff}.schedule .empty{background:#fff}
 .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.legend span{padding:4px 10px;border-radius:6px;font-size:.85em;background:#f1f4f8;border:1px solid #e1e7ee}.legend .n{background:var(--green);border-color:var(--green)}.legend .r{background:var(--blue);color:#fff;border-color:var(--blue)}.legend .s{background:var(--yellow);border-color:var(--yellow)}.legend .red{background:#e64e4e;color:#fff;border-color:#e64e4e}.legend .f{background:var(--pink);border-color:var(--pink)}.legend .mn{background:#fff;box-shadow:inset 0 0 0 2px #172536}
@@ -151,6 +150,12 @@ button.secondary:hover{border-color:#9fb0c2;background:#e9eef4}
 #pairMain .panel{overflow:visible}#pairMain .panel>h3{border-radius:10px 10px 0 0}
 .ddlist{max-height:70vh;min-width:22em}
 
+/* ===== Giorno compensativo (arancione) ===== */
+.schedule td.comp{background:var(--orange);box-shadow:inset 0 0 0 1px #ffffff55}
+.legend .k{background:var(--orange);border-color:var(--orange)}
+.mc.mK{background:var(--orange);border-color:var(--orange)}.mc.mK small{color:#fff}
+.mstats{grid-template-columns:repeat(5,1fr)}
+.dsec.k .chip{background:#fdebd0;border-color:#f5c98a}
 /* ===== PWA: splash, login, sicurezza area, stato cloud ===== */
 html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 .locked>header,.locked>nav,.locked>main,.locked>footer{display:none!important}
@@ -191,7 +196,7 @@ body{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))}
 @media(prefers-reduced-motion:reduce){.sp-logo,.sp-inner h1,.sp-rule,.sp-sub,.sp-bar,.sp-bar i{animation:none}}
 </style>
 </head>
-<body>
+<body class="locked">
 <div id="splash" role="status" aria-live="polite">
  <div class="sp-inner">
   <img class="sp-logo" src="icon-512.png" alt="" width="132" height="132">
@@ -254,7 +259,7 @@ body{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))}
  <div class="calhead"><div class="calmonth" id="calMonth"></div><div class="calmeta" id="calMeta"></div></div>
  <div class="tablewrap"><table class="schedule" id="schedule"></table></div>
  <div class="legend">
-  <span class="M">M · Mattina</span><span class="n">N · Notte</span><span class="r">R · Riposo post-notte</span><span class="s">M · Sabato mattina</span><span class="f">F · Ferie</span><span class="red">Rosso · Sab/Dom/Festivo non lavorato</span><span class="mn">Bordo scuro · inserito a mano (bloccato)</span>
+  <span class="M">M · Mattina</span><span class="n">N · Notte</span><span class="r">R · Riposo post-notte</span><span class="s">M · Sabato mattina</span><span class="f">F · Ferie</span><span class="red">Rosso · Sab/Dom/Festivo non lavorato</span><span class="k">Arancione · Giorno compensativo</span><span class="mn">Bordo scuro · inserito a mano (bloccato)</span>
  </div>
  <p class="note"><b>Clic su una cella</b> per scegliere M, N, R, S (solo sabato), F, giorno non lavorato oppure vuoto. Le celle inserite a mano restano bloccate: “Genera turni” riempie solo quelle vuote, aggirando le tue scelte. Con ↶ ANNULLA (o Ctrl+Z) torni indietro di una modifica o di una generazione. Il rosso indica il giorno non lavorato del calendario, non una mansione. Il sabato mattina è giallo ed è compreso nel totale mensile. Sono consentite al massimo due notti consecutive; dopo l’ultima notte della sequenza è obbligatorio il riposo.</p>
 </section>
@@ -579,6 +584,14 @@ $("schedule").addEventListener("click",e=>{
  openMenu(td,+td.dataset.w,+td.dataset.d);
 });
 
+// Giorno compensativo: cella vuota in un giorno feriale quando l'operatore ha già raggiunto le sue giornate lavorative.
+function compOf(st,dates,c){
+ const wk=dates.filter(x=>!x.red).length;
+ return st.cells.map((row,i)=>{
+  const T=wk-row.filter((v,d)=>(v==="F"||v==="X")&&!dates[d].red).length,ok=c.work[i]===T;
+  return row.map((v,d)=>ok&&v===""&&!dates[d].red);
+ });
+}
 // ---------- Rendering ----------
 function rng(a){return Math.min(...a)+"–"+Math.max(...a);}
 function renderAll(){
@@ -607,17 +620,17 @@ function renderAll(){
   diag=`<div class="note">Tabella vuota: clicca una cella per inserire un turno a mano (resterà bloccato), poi premi “Genera turni” per riempire le celle vuote.</div>`;
  }
  $("diagnostics").innerHTML=diag;
- let h='<tr><th>OPERATORE</th><th title="Notti">NOTTI</th><th title="Giorni lavorati">GG LAV.</th><th title="Notti in sabato, domenica o festivo">NOTTI FEST.</th>'+dates.map(x=>`<th>${x.d}<br>${DOW[x.w]}</th>`).join("")+'</tr>';
- const CL={N:"N",R:"R",S:"S",F:"F",X:"red",M:"M"};
+ let h='<tr><th>OPERATORE</th><th title="Notti">NOTTI</th><th title="Giorni lavorati">GG LAV.</th><th title="Notti in sabato, domenica o festivo">NOTTI FEST.</th><th title="Giorni compensativi (celle arancioni)">COMP.</th>'+dates.map(x=>`<th>${x.d}<br>${DOW[x.w]}</th>`).join("")+'</tr>';
+ const CL={N:"N",R:"R",S:"S",F:"F",X:"red",M:"M"},cm=compOf(st,dates,c),cc=cm.map(r=>r.filter(Boolean).length);
  all.forEach((name,i)=>{
-  h+=`<tr><td>${name}${GR[i]?` <span class="pr" title="Gruppo fisso: ${GR[i].join(", ")}">⇄</span>`:""}</td><td class="cnt">${c.nights[i]}</td><td class="cnt">${c.work[i]}</td><td class="cnt">${c.redN[i]}</td>`+
+  h+=`<tr><td>${name}${GR[i]?` <span class="pr" title="Gruppo fisso: ${GR[i].join(", ")}">⇄</span>`:""}</td><td class="cnt">${c.nights[i]}</td><td class="cnt">${c.work[i]}</td><td class="cnt">${c.redN[i]}</td><td class="cnt">${cc[i]}</td>`+
    st.cells[i].map((v,d)=>{
-    const cls=(v?CL[v]:("e"+(dates[d].red?" redday":"")))+(st.man[i][d]?" man":"");
-    return `<td class="${cls}" data-w="${i}" data-d="${d}" title="${name} · ${dates[d].d}">${v==="X"?"":v==="S"?"M":v}</td>`;
+    const cls=(v?CL[v]:("e"+(dates[d].red?" redday":"")+(cm[i][d]?" comp":"")))+(st.man[i][d]?" man":"");
+    return `<td class="${cls}" data-w="${i}" data-d="${d}" title="${name} · ${dates[d].d}${cm[i][d]?" · giorno compensativo":""}">${v==="X"?"":v==="S"?"M":v}</td>`;
    }).join("")+'</tr>';
  });
  const nd=dates.map((x,d)=>st.cells.reduce((p,r)=>p+(r[d]==="N"?1:0),0));
- h+='<tr><td title="Operai di notte nel giorno"><b>TOTALE NOTTI</b></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td>'+nd.map(n=>`<td style="font-weight:700;background:#eef2f7;color:#172536" title="${n} operai di notte">${n}</td>`).join("")+'</tr>';
+ h+='<tr><td title="Operai di notte nel giorno"><b>TOTALE NOTTI</b></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td>'+nd.map(n=>`<td style="font-weight:700;background:#eef2f7;color:#172536" title="${n} operai di notte">${n}</td>`).join("")+'</tr>';
  $("schedule").innerHTML=h;
  
  renderMob();
@@ -639,7 +652,7 @@ function downloadPDF(){
  const text=(t,x,y,sz,bold,k)=>{o+=`BT /${bold?"F2":"F1"} ${sz} Tf ${col(k)} rg ${f(x)} ${f(PH-y)} Td (${esc(t)}) Tj ET\n`;};
  const ctext=(t,x,w,y,sz,bold,k)=>text(t,x+(w-tw(t,sz))/2,y,sz,bold,k);
  const BLACK=[20,30,40],WHITE=[255,255,255];
- const fills={N:[88,166,92],R:[40,120,189],S:[245,214,78],F:[255,133,133],X:[230,78,78],M:WHITE,"":WHITE};
+ const cmP=compOf(st,dates,c),fills={N:[88,166,92],R:[40,120,189],S:[245,214,78],F:[255,133,133],X:[230,78,78],M:WHITE,"":WHITE};
  text("TURNI - "+names[st.m].toUpperCase()+" "+st.y,M,M+16,18,true,BLACK);text("Manutenzione stradale - San Giovanni e Staffetta",M+tw("TURNI - "+names[st.m].toUpperCase()+" "+st.y,18)+14,M+16,8,false,[90,104,119]);
  const xs=[M,M+nameW,M+nameW+cntW,M+nameW+2*cntW,M+nameW+3*cntW];
  rect(M,top,nameW+3*cntW+D*dayW,headH,[233,237,242]);
@@ -650,7 +663,7 @@ function downloadPDF(){
   rect(M,y,nameW+3*cntW,rowH,[245,247,249]);
   text(name,M+4,base,8,true,BLACK);
   cells[i].forEach((v,d)=>{
-   const cx=xs[4]+d*dayW;rect(cx,y,dayW,rowH,v===""&&dates[d].red?[251,227,227]:(fills[v]||WHITE));
+   const cx=xs[4]+d*dayW;rect(cx,y,dayW,rowH,v===""&&dates[d].red?[251,227,227]:(cmP[i][d]?[243,156,18]:(fills[v]||WHITE)));
    const t=v==="X"?"":v==="S"?"M":v;
    if(t)ctext(t,cx,dayW,base,8,v!=="M"&&v!=="S",v==="R"?WHITE:BLACK);
   });
@@ -709,19 +722,19 @@ function renderMob(){
  let h=`<div class="mhead"><div class="mm">${names[st.m]} <b>${st.y}</b></div><div class="mchips"><span>${D} giorni</span><span>${wk} lavorativi</span></div></div>`;
  h+=`<div class="seg"><button data-mm="op" class="${mobMode==="op"?"on":""}">Per operatore</button><button data-mm="day" class="${mobMode==="day"?"on":""}">Per giorno</button></div>`;
  if(mobMode==="op"){
-  const row=st.cells[mobOp],off=(dates[0].w+6)%7;
+  const row=st.cells[mobOp],off=(dates[0].w+6)%7,cmO=compOf(st,dates,c)[mobOp];
   h+=`<select id="mobOpSel">${all.map((n,i)=>`<option value="${i}"${i===mobOp?" selected":""}>${n} · ${i<SG.length?"San Giovanni":"Staffetta"}</option>`).join("")}</select>`;
-  h+=`<div class="mstats"><div><b>${c.nights[mobOp]}</b>notti</div><div><b>${c.work[mobOp]}</b>giorni lav.</div><div><b>${c.redN[mobOp]}</b>notti fest.</div><div><b>${c.ferie[mobOp]}</b>ferie</div></div>`;
+  h+=`<div class="mstats"><div><b>${c.nights[mobOp]}</b>notti</div><div><b>${c.work[mobOp]}</b>giorni lav.</div><div><b>${c.redN[mobOp]}</b>notti fest.</div><div><b>${c.ferie[mobOp]}</b>ferie</div><div><b>${cmO.filter(Boolean).length}</b>compens.</div></div>`;
   h+='<div class="mgrid">'+["L","M","M","G","V","S","D"].map(x=>`<i>${x}</i>`).join("")+"<u></u>".repeat(off);
-  dates.forEach((x,d)=>{const v=row[d],k=MC[v]||["",""];h+=`<div class="mc ${k[1]}${x.red&&!v?" rd":""}${x.hol?" hl":""}"><small>${x.d}</small><b>${k[0]}</b></div>`;});
-  h+='</div><div class="mleg"><span>N notte</span><span>R riposo</span><span>M mattina</span><span>F ferie</span><span>rosso = non lavorato</span></div>';
+  dates.forEach((x,d)=>{const v=row[d],k=MC[v]||["",""];h+=`<div class="mc ${k[1]}${cmO[d]?" mK":""}${x.red&&!v?" rd":""}${x.hol?" hl":""}"><small>${x.d}</small><b>${k[0]}</b></div>`;});
+  h+='</div><div class="mleg"><span>N notte</span><span>R riposo</span><span>M mattina</span><span>F ferie</span><span>arancione = compensativo</span><span>rosso = non lavorato</span></div>';
  }else{
   const x=dates[mobDay],hn=autoHolidays(st.y,st.m).get(x.d);
   const g=codes=>all.map((n,w)=>[n,w]).filter(([n,w])=>codes.includes(st.cells[w][mobDay]));
-  const night=g(["N"]),sec=(cl,t,a)=>`<div class="dsec ${cl}"><h4><span>${t}</span><span>${a.length}</span></h4><div class="chips">${a.length?a.map(([n])=>`<span class="chip">${n}</span>`).join(""):"—"}</div></div>`;
+  const cmD=compOf(st,dates,c),comp=all.map((n,w)=>[n,w]).filter(([n,w])=>cmD[w][mobDay]),night=g(["N"]),sec=(cl,t,a)=>`<div class="dsec ${cl}"><h4><span>${t}</span><span>${a.length}</span></h4><div class="chips">${a.length?a.map(([n])=>`<span class="chip">${n}</span>`).join(""):"—"}</div></div>`;
   h+=`<div class="dnav"><button data-md="-1">‹</button><div>${DOWF[x.w]} ${x.d}${hn?`<small>${hn}</small>`:""}</div><button data-md="1">›</button></div>`;
   h+=`<div class="bignight">Operai di notte<b>${night.length}</b></div>`;
-  h+=sec("n","Notte · San Giovanni",night.filter(([n,w])=>w<SG.length))+sec("n","Notte · Staffetta",night.filter(([n,w])=>w>=SG.length))+sec("","Mattina",g(["M","S"]))+sec("r","Riposo post-notte",g(["R"]))+sec("f","Ferie",g(["F"]));
+  h+=sec("n","Notte · San Giovanni",night.filter(([n,w])=>w<SG.length))+sec("n","Notte · Staffetta",night.filter(([n,w])=>w>=SG.length))+sec("","Mattina",g(["M","S"]))+sec("r","Riposo post-notte",g(["R"]))+sec("f","Ferie",g(["F"]))+sec("k","Compensativo",comp);
  }
  h+='<div class="mfoot"><p class="note">I turni sono sincronizzati automaticamente con il PC: vedi sempre gli stessi dati. Le modifiche si vedono sugli altri dispositivi in pochi secondi.</p></div>';
  $("mobBody").innerHTML=h;
@@ -780,8 +793,8 @@ cur=getState();syncInputs(cur);renderAll();
 // Usata da sync.js quando arrivano dati nuovi dal cloud
 window.appReload=function(){Object.keys(states).forEach(k=>delete states[k]);cur=getState();syncInputs(cur);renderAll();renderPairs();};
 </script>
+<script type="module" src="sync.js"></script>
 <script>
-window.__syncBoot=true;
 setTimeout(function(){
  if(window.__syncBoot)return;
  var s=document.getElementById("splash");if(!s||s.classList.contains("hide"))return;
@@ -794,7 +807,7 @@ setTimeout(function(){
 },6000);
 </script>
 <script>
-if(false&&"serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 }
 </script>
