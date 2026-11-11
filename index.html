@@ -54,6 +54,12 @@ button.secondary{background:#f1f4f8}button.dark{background:var(--navy2);border-c
 .schedule td[data-w]{cursor:pointer}.schedule td[data-w]:hover{filter:brightness(.93)}.schedule td.e{background:#fff}.schedule td.redday{background:#fbe3e3}.schedule td.man{box-shadow:inset 0 0 0 2px #172536}
 @media(max-width:750px){:root{--w1:105px;--w2:50px;--fs:10px;--rh:30px}header h1{font-size:1.25em}.tablewrap{max-height:none}}
 @media print{body{background:#fff}header,.controls,.noprint{display:none!important}main{display:block;max-width:none;margin:0;padding:0}.panel{box-shadow:none;border:0;break-inside:avoid}.tablewrap{overflow:visible;max-height:none}.schedule{font-size:8px}.schedule th:first-child,.schedule td:first-child,#schedule th,#schedule td.cnt{position:static!important}}
+#dlgBg{position:fixed;inset:0;z-index:100000;background:#0a141f99;display:none;align-items:center;justify-content:center;padding:20px}
+#dlgBg.on{display:flex}
+#dlg{background:#fff;border-radius:14px;padding:22px 20px 16px;max-width:380px;width:100%;box-shadow:0 12px 40px #0006;border-top:4px solid var(--orange)}
+#dlg p{margin:0 0 18px;font-size:1.02em;line-height:1.45;color:var(--ink);white-space:pre-line}
+#dlg .db{display:flex;gap:10px;justify-content:flex-end}
+#dlg .db button{min-width:92px}
 #menu{position:fixed;z-index:1000;display:none;background:#fff;border:1px solid #c5ced8;border-radius:10px;box-shadow:0 8px 24px #0003;padding:6px;min-width:210px;max-width:92vw}
 #menu .mt{font-size:11px;color:#526170;padding:4px 8px 6px;font-weight:700}
 #menu button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:none;padding:9px 10px;border-radius:6px;font-weight:600;min-height:38px}
@@ -258,6 +264,7 @@ body{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))}
  <div id="pairList"></div></section></main>
 <main id="mobMain" hidden><section class="panel"><h3>Turni smartphone</h3><div id="mobBody"></div></section></main>
 <div id="menu"></div>
+<div id="dlgBg"><div id="dlg" role="alertdialog" aria-modal="true"><p id="dlgMsg"></p><div class="db"><button class="secondary" id="dlgNo">Annulla</button><button class="primary" id="dlgOk">OK</button></div></div></div>
 <footer class="statusbar noprint"><span id="sbMonth"></span><span id="sbEsito"></span><span id="sbMan"></span><span class="sp"></span><span id="syncStatus">☁ Avvio…</span></footer>
 <script>
 const SG=["NOCERINO","FIUME","VICEDOMINI","RUSSO E.","ESPOSITO D.","TROMBETTA","SEMONELLA","DE LELLA","PICCIRILLO","LOMBARDO","ESPOSITO G.","MILO","GAS","PICALE","SECONDULFO","TAVOLOZZA"];
@@ -488,6 +495,16 @@ function calc(cells,dates){
 }
 // ---------- Stato per mese, salvataggio e annulla ----------
 const states={};let cur=null;
+// Finestre di dialogo interne (niente "indirizzo dice")
+function dlg(msg,conf){return new Promise(res=>{
+ const bg=$("dlgBg"),ok=$("dlgOk"),no=$("dlgNo");
+ $("dlgMsg").textContent=msg;no.style.display=conf?"":"none";bg.classList.add("on");ok.focus();
+ const done=v=>{bg.classList.remove("on");ok.onclick=no.onclick=bg.onclick=null;document.removeEventListener("keydown",kd,true);res(v);};
+ const kd=e=>{if(e.key==="Escape"){e.preventDefault();done(false);}};
+ document.addEventListener("keydown",kd,true);
+ ok.onclick=()=>done(true);no.onclick=()=>done(false);bg.onclick=e=>{if(e.target===bg)done(!conf);};
+});}
+const askConfirm=m=>dlg(m,true),showMsg=m=>dlg(m,false);
 function loadStore(){try{return JSON.parse(localStorage.getItem(SKEY)||"{}")}catch(e){return {}}}
 function persist(st){try{const s=loadStore();s[st.key]={hol:st.hol,last:st.last,cells:st.cells,man:st.man};localStorage.setItem(SKEY,JSON.stringify(s));}catch(e){}}
 function getState(){
@@ -518,8 +535,8 @@ function setCell(w,d,v){
  const st=cur;if(st.cells[w][d]===v&&st.man[w][d]===(v!==""))return;
  snap(st);st.cells[w][d]=v;st.man[w][d]=v!=="";st.dirty=true;persist(st);renderAll();
 }
-function clearAll(){const st=cur;if(!st.cells.some(r=>r.some(v=>v!==""))){return;}
- if(!confirm("Svuotare tutta la tabella, comprese le selezioni manuali? Puoi annullare con ANNULLA."))return;
+async function clearAll(){const st=cur;if(!st.cells.some(r=>r.some(v=>v!==""))){return;}
+ if(!await askConfirm("Svuotare tutta la tabella, comprese le selezioni manuali? Puoi annullare con ANNULLA."))return;
  snap(st);const D=st.cells[0].length;st.cells=all.map(()=>Array(D).fill(""));st.man=all.map(()=>Array(D).fill(false));st.gen=null;st.dirty=false;persist(st);renderAll();}
 function clearAuto(){const st=cur;if(!st.cells.some((r,w)=>r.some((v,d)=>v!==""&&!st.man[w][d])))return;
  snap(st);st.cells=st.cells.map((r,w)=>r.map((v,d)=>st.man[w][d]?v:""));st.gen=null;st.dirty=false;persist(st);renderAll();}
@@ -652,16 +669,16 @@ function downloadBackup(){
 }
 function restoreBackup(file){
  const r=new FileReader();
- r.onload=()=>{
-  let b;try{b=JSON.parse(r.result)}catch(e){alert("File non valido: non è un backup leggibile.");return;}
+ r.onload=async()=>{
+  let b;try{b=JSON.parse(r.result)}catch(e){await showMsg("File non valido: non è un backup leggibile.");return;}
   const ok=b&&b.app===BK_APP&&b.storico&&typeof b.storico==="object"&&b.fineMese&&typeof b.fineMese==="object"&&b.mesi&&typeof b.mesi==="object";
-  if(!ok){alert("Questo file non è un backup di questa app.");return;}
+  if(!ok){await showMsg("Questo file non è un backup di questa app.");return;}
   const n=Object.keys(b.mesi).length;
-  if(!confirm(`Ripristinare il backup del ${String(b.date||"").slice(0,10)||"data sconosciuta"}? Contiene ${n} mesi. I dati attuali di questo browser verranno sostituiti.`))return;
+  if(!await askConfirm(`Ripristinare il backup del ${String(b.date||"").slice(0,10)||"data sconosciuta"}? Contiene ${n} mesi. I dati attuali di questo browser verranno sostituiti.`))return;
   try{localStorage.setItem(HKEY,JSON.stringify(b.storico));localStorage.setItem(EKEY,JSON.stringify(b.fineMese));localStorage.setItem(SKEY,JSON.stringify(b.mesi));if(Array.isArray(b.coppie))localStorage.setItem(PKEY,JSON.stringify(b.coppie));}
-  catch(e){alert("Impossibile scrivere i dati nel browser.");return;}
+  catch(e){await showMsg("Impossibile scrivere i dati nel browser.");return;}
   Object.keys(states).forEach(k=>delete states[k]);
-  cur=getState();syncInputs(cur);renderAll();renderPairs();alert("Backup ripristinato.");
+  cur=getState();syncInputs(cur);renderAll();renderPairs();showMsg("Backup ripristinato.");
  };
  r.readAsText(file);
 }
@@ -728,7 +745,7 @@ function stepMonth(k){let m=+$("month").value+k,y=+$("year").value||2026;if(m<0)
 $("prevM").onclick=()=>stepMonth(-1);$("nextM").onclick=()=>stepMonth(1);
 $("lastnight").onchange=()=>{cur.last=$("lastnight").value;persist(cur);renderAll();};
 $("undo").onclick=undo;$("clearAll").onclick=clearAll;$("clearAuto").onclick=clearAuto;
-$("resetHist").onclick=()=>{if(confirm("Cancellare lo storico delle notti festive dei mesi precedenti?")){try{localStorage.removeItem(HKEY)}catch(e){}alert("Storico azzerato.");}};
+$("resetHist").onclick=async()=>{if(await askConfirm("Cancellare lo storico delle notti festive dei mesi precedenti?")){try{localStorage.removeItem(HKEY)}catch(e){}showMsg("Storico azzerato.");}};
 $("pdf").onclick=downloadPDF;$("backup").onclick=downloadBackup;
 $("restore").onclick=()=>$("restoreFile").click();
 $("restoreFile").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f)restoreBackup(f);};
@@ -740,7 +757,7 @@ $("generate").onclick=()=>{
    const fx=st.cells.map((r,w)=>r.map((v,d)=>st.man[w][d]?v:""));
    const res=make(st,fx);
    st.cells=res.cells;st.gen=res;st.dirty=false;persist(st);
-  }catch(err){st.undo.pop();alert("Errore nella generazione: "+err.message);}
+  }catch(err){st.undo.pop();showMsg("Errore nella generazione: "+err.message);}
   btn.disabled=false;btn.textContent="GENERA TURNI";renderAll();
  },30);
 };
