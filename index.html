@@ -44,14 +44,14 @@ button.secondary{background:#f1f4f8}button.dark{background:var(--navy2);border-c
 .schedule th{background:#e6ebf1;color:var(--navy);position:sticky;top:0;z-index:2;line-height:1.2}
 .schedule th:first-child,.schedule td:first-child{position:sticky;left:0;z-index:3;background:#f6f8fa;width:var(--w1);min-width:var(--w1);max-width:var(--w1);text-align:left;font-weight:700;padding-left:10px}
 .schedule th:first-child{z-index:5;background:#e6ebf1}
-#schedule th:nth-child(n+2):nth-child(-n+5),#schedule td.cnt{position:sticky;z-index:3;width:var(--w2);min-width:var(--w2);max-width:var(--w2);background:#f6f8fa;font-weight:700}
-#schedule th:nth-child(n+2):nth-child(-n+5){z-index:5;background:#e6ebf1}
-#schedule th:nth-child(2),#schedule td.cnt:nth-child(2){left:var(--w1)}#schedule th:nth-child(3),#schedule td.cnt:nth-child(3){left:calc(var(--w1) + var(--w2))}#schedule th:nth-child(4),#schedule td.cnt:nth-child(4){left:calc(var(--w1) + 2*var(--w2))}#schedule th:nth-child(5),#schedule td.cnt:nth-child(5){left:calc(var(--w1) + 3*var(--w2));box-shadow:2px 0 4px #14283b14}
+#schedule th:nth-child(n+2):nth-child(-n+4),#schedule td.cnt{position:sticky;z-index:3;width:var(--w2);min-width:var(--w2);max-width:var(--w2);background:#f6f8fa;font-weight:700}
+#schedule th:nth-child(n+2):nth-child(-n+4){z-index:5;background:#e6ebf1}
+#schedule th:nth-child(2),#schedule td.cnt:nth-child(2){left:var(--w1)}#schedule th:nth-child(3),#schedule td.cnt:nth-child(3){left:calc(var(--w1) + var(--w2))}#schedule th:nth-child(4),#schedule td.cnt:nth-child(4){left:calc(var(--w1) + 2*var(--w2));box-shadow:2px 0 4px #14283b14}
 .schedule tr:last-child td{border-top:2px solid var(--navy2)}
 .schedule .M{background:#fff}.schedule .N{background:var(--green);color:#0e2410;font-weight:800}.schedule .R{background:var(--blue);color:#fff;font-weight:800}.schedule .F{background:var(--pink);font-weight:800}.schedule .S{background:var(--yellow);font-weight:800}.schedule .red{background:#e64e4e;color:#fff}.schedule .empty{background:#fff}
-.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.legend span{padding:4px 10px;border-radius:6px;font-size:.85em;background:#f1f4f8;border:1px solid #e1e7ee}.legend .n{background:var(--green);border-color:var(--green)}.legend .r{background:var(--blue);color:#fff;border-color:var(--blue)}.legend .s{background:var(--yellow);border-color:var(--yellow)}.legend .red{background:#e64e4e;color:#fff;border-color:#e64e4e}.legend .rcl{background:#dcebf8;color:#2878bd;border-color:#b9d5ee;font-weight:700}.legend .f{background:var(--pink);border-color:var(--pink)}.legend .mn{background:#fff;box-shadow:inset 0 0 0 2px #172536}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.legend span{padding:4px 10px;border-radius:6px;font-size:.85em;background:#f1f4f8;border:1px solid #e1e7ee}.legend .n{background:var(--green);border-color:var(--green)}.legend .r{background:var(--blue);color:#fff;border-color:var(--blue)}.legend .s{background:var(--yellow);border-color:var(--yellow)}.legend .red{background:#e64e4e;color:#fff;border-color:#e64e4e}.legend .f{background:var(--pink);border-color:var(--pink)}.legend .mn{background:#fff;box-shadow:inset 0 0 0 2px #172536}
 .badge{display:inline-block;padding:3px 7px;border-radius:5px;background:#edf1f5;margin:2px;font-size:.85em}
-.schedule td[data-w]{cursor:pointer}.schedule td[data-w]:hover{filter:brightness(.93)}.schedule td.e{background:#fff}.schedule td.rc{background:#dcebf8;color:#2878bd;font-weight:700}.schedule td.redday{background:#fbe3e3}.schedule td.man{box-shadow:inset 0 0 0 2px #172536}
+.schedule td[data-w]{cursor:pointer}.schedule td[data-w]:hover{filter:brightness(.93)}.schedule td.e{background:#fff}.schedule td.redday{background:#fbe3e3}.schedule td.man{box-shadow:inset 0 0 0 2px #172536}
 @media(max-width:750px){:root{--w1:105px;--w2:50px;--fs:10px;--rh:30px}header h1{font-size:1.25em}.tablewrap{max-height:none}}
 @media print{body{background:#fff}header,.controls,.noprint{display:none!important}main{display:block;max-width:none;margin:0;padding:0}.panel{box-shadow:none;border:0;break-inside:avoid}.tablewrap{overflow:visible;max-height:none}.schedule{font-size:8px}.schedule th:first-child,.schedule td:first-child,#schedule th,#schedule td.cnt{position:static!important}}
 #dlgBg{position:fixed;inset:0;z-index:100000;background:#0a141f99;display:none;align-items:center;justify-content:center;padding:20px}
@@ -99,11 +99,11 @@ button:disabled{opacity:.5;cursor:default}
 .mchips{display:flex;gap:6px}.mchips span,.chip{background:#eef2f7;border:1px solid #dfe6ee;border-radius:20px;padding:3px 11px;font-size:.85em;font-weight:600;color:var(--navy2)}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:#e4e9ef;border-radius:11px;padding:3px;margin:8px 0 14px}.seg button{border:0;background:transparent;padding:.8em;border-radius:9px;color:var(--mut)}.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 4px #0002}
 #mobOpSel{width:100%;font-size:1.1em;padding:.8em;margin-bottom:12px;font-weight:700}
-.mstats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}.mstats div{background:#f4f6f9;border:1px solid #e6ebf1;border-radius:10px;padding:8px 2px;text-align:center;font-size:.72em;color:var(--mut)}.mstats b{display:block;font-size:1.9em;color:var(--navy);line-height:1.1}
+.mstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.mstats div{background:#f4f6f9;border:1px solid #e6ebf1;border-radius:10px;padding:8px 2px;text-align:center;font-size:.72em;color:var(--mut)}.mstats b{display:block;font-size:1.9em;color:var(--navy);line-height:1.1}
 .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.mgrid i{font-style:normal;text-align:center;font-size:.75em;font-weight:700;color:var(--mut);padding:4px 0}
 .mc{aspect-ratio:1/1.05;border-radius:9px;border:1px solid #dde3ea;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.mc small{font-size:.68em;color:#7d8a98;margin-bottom:3px}.mc b{font-size:1.25em}
 .mc.rd{background:#fbe3e3}.mc.hl small{color:#c0392b;font-weight:800}
-.mc.mN{background:var(--green);border-color:var(--green)}.mc.mN small,.mc.mR small{color:#ffffffcc}.mc.mR{background:var(--blue);border-color:var(--blue);color:#fff}.mc.mS{background:var(--yellow);border-color:var(--yellow)}.mc.mC{background:#dcebf8;border-color:#b9d5ee;color:#2878bd}.mc.mF{background:var(--pink);border-color:var(--pink)}.mc.mX{background:#e64e4e;border-color:#e64e4e}.mc.mX small{color:#fff}
+.mc.mN{background:var(--green);border-color:var(--green)}.mc.mN small,.mc.mR small{color:#ffffffcc}.mc.mR{background:var(--blue);border-color:var(--blue);color:#fff}.mc.mS{background:var(--yellow);border-color:var(--yellow)}.mc.mF{background:var(--pink);border-color:var(--pink)}.mc.mX{background:#e64e4e;border-color:#e64e4e}.mc.mX small{color:#fff}
 .dnav{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dnav button{font-size:1.5em;line-height:1;padding:.35em .8em}.dnav div{flex:1;text-align:center;font-weight:800;font-size:1.15em;color:var(--navy)}.dnav small{display:block;font-weight:600;color:#c0392b;font-size:.7em}
 .bignight{background:var(--navy);color:#fff;border-radius:12px;padding:12px;text-align:center;margin-bottom:12px}.bignight b{font-size:2.6em;display:block;line-height:1.1;color:var(--orange)}
 .dsec{margin-bottom:12px}.dsec h4{margin:0 0 6px;font-size:.78em;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);display:flex;justify-content:space-between}
@@ -253,7 +253,7 @@ body{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))}
  <div class="calhead"><div class="calmonth" id="calMonth"></div><div class="calmeta" id="calMeta"></div></div>
  <div class="tablewrap"><table class="schedule" id="schedule"></table></div>
  <div class="legend">
-  <span class="M">M · Mattina</span><span class="n">N · Notte</span><span class="r">R · Riposo post-notte</span><span class="rcl">R · Riposo compensativo (cella bianca automatica)</span><span class="s">M · Sabato mattina</span><span class="f">F · Ferie</span><span class="red">Rosso · Sab/Dom/Festivo non lavorato</span><span class="mn">Bordo scuro · inserito a mano (bloccato)</span>
+  <span class="M">M · Mattina</span><span class="n">N · Notte</span><span class="r">R · Riposo post-notte</span><span class="s">M · Sabato mattina</span><span class="f">F · Ferie</span><span class="red">Rosso · Sab/Dom/Festivo non lavorato</span><span class="mn">Bordo scuro · inserito a mano (bloccato)</span>
  </div>
  <p class="note"><b>Clic su una cella</b> per scegliere M, N, R, S (solo sabato), F, giorno non lavorato oppure vuoto. Le celle inserite a mano restano bloccate: “Genera turni” riempie solo quelle vuote, aggirando le tue scelte. Con ↶ ANNULLA (o Ctrl+Z) torni indietro di una modifica o di una generazione. Il rosso indica il giorno non lavorato del calendario, non una mansione. Il sabato mattina è giallo ed è compreso nel totale mensile. Sono consentite al massimo due notti consecutive; dopo l’ultima notte della sequenza è obbligatorio il riposo.</p>
 </section>
@@ -485,19 +485,9 @@ function build(y,m,dates,weekdays,s,active,act,cin,fx,T,wm){
  }
  return {y,m,dates,cells,weekdays,issues,activeDays:[...Array(D).keys()].filter(d=>cells.some((r,w)=>w>=SG.length&&r[d]==="N"))};
 }
-// Riposi compensativi: celle vuote (bianche) in un giorno lavorativo, una volta che l'operatore
-// ha già raggiunto il suo obiettivo di giorni lavorati (quindi non sono mattine ancora da assegnare).
-function compFlags(cells,dates){
- const weekdays=dates.filter(x=>!x.red).length;
- return cells.map(row=>{
-  const T=weekdays-row.filter((v,d)=>(v==="F"||v==="X")&&!dates[d].red).length;
-  const work=row.filter(v=>v==="M"||v==="N"||v==="S").length;
-  return row.map((v,d)=>v===""&&!dates[d].red&&work>=T);
- });
-}
 // Conteggi calcolati sempre dalla tabella corrente (anche con celle manuali).
 function calc(cells,dates){
- const o={nights:[],work:[],satN:[],sunN:[],satM:[],redD:[],rests:[],ferie:[],redN:[],comp:compFlags(cells,dates).map(r=>r.filter(Boolean).length)};
+ const o={nights:[],work:[],satN:[],sunN:[],satM:[],redD:[],rests:[],ferie:[],redN:[]};
  cells.forEach(row=>{let n=0,wk=0,sn=0,un=0,sm=0,rd=0,rs=0,fe=0,rn=0;
   row.forEach((v,d)=>{if(v==="N"){n++;if(dates[d].sat)sn++;if(dates[d].sun)un++;if(dates[d].red)rn++;}
    if(v==="N"||v==="M"||v==="S")wk++;if(v==="S")sm++;if(v==="X")rd++;if(v==="R")rs++;if(v==="F")fe++;});
@@ -579,7 +569,7 @@ $("schedule").addEventListener("click",e=>{
 function rng(a){return Math.min(...a)+"–"+Math.max(...a);}
 function renderAll(){
  setPT();
- const st=cur,dates=datesOf(st),D=dates.length,weekdays=dates.filter(x=>!x.red).length,c=calc(st.cells,dates),cf=compFlags(st.cells,dates);
+ const st=cur,dates=datesOf(st),D=dates.length,weekdays=dates.filter(x=>!x.red).length,c=calc(st.cells,dates);
  const nMan=st.man.reduce((p,r)=>p+r.filter(Boolean).length,0),gen=st.gen&&!st.dirty?st.gen:null;
  const cin=carryIn(st.y,st.m,st.last),live=liveIssues(st.cells,dates,cin);
  const issues=gen?gen.issues:live;
@@ -603,18 +593,17 @@ function renderAll(){
   diag=`<div class="note">Tabella vuota: clicca una cella per inserire un turno a mano (resterà bloccato), poi premi “Genera turni” per riempire le celle vuote.</div>`;
  }
  $("diagnostics").innerHTML=diag;
- let h='<tr><th>OPERATORE</th><th title="Notti">NOTTI</th><th title="Giorni lavorati">GG LAV.</th><th title="Notti in sabato, domenica o festivo">NOTTI FEST.</th><th title="Riposi compensativi">RIPOSO COMP.</th>'+dates.map(x=>`<th>${x.d}<br>${DOW[x.w]}</th>`).join("")+'</tr>';
+ let h='<tr><th>OPERATORE</th><th title="Notti">NOTTI</th><th title="Giorni lavorati">GG LAV.</th><th title="Notti in sabato, domenica o festivo">NOTTI FEST.</th>'+dates.map(x=>`<th>${x.d}<br>${DOW[x.w]}</th>`).join("")+'</tr>';
  const CL={N:"N",R:"R",S:"S",F:"F",X:"red",M:"M"};
  all.forEach((name,i)=>{
-  h+=`<tr><td>${name}${GR[i]?` <span class="pr" title="Gruppo fisso: ${GR[i].join(", ")}">⇄</span>`:""}</td><td class="cnt">${c.nights[i]}</td><td class="cnt">${c.work[i]}</td><td class="cnt">${c.redN[i]}</td><td class="cnt">${c.comp[i]}</td>`+
+  h+=`<tr><td>${name}${GR[i]?` <span class="pr" title="Gruppo fisso: ${GR[i].join(", ")}">⇄</span>`:""}</td><td class="cnt">${c.nights[i]}</td><td class="cnt">${c.work[i]}</td><td class="cnt">${c.redN[i]}</td>`+
    st.cells[i].map((v,d)=>{
-    const rc=cf[i][d];
-    const cls=(v?CL[v]:(rc?"rc":"e"+(dates[d].red?" redday":"")))+(st.man[i][d]?" man":"");
-    return `<td class="${cls}" data-w="${i}" data-d="${d}" title="${name} · ${dates[d].d}${rc?" · Riposo compensativo":""}">${v==="X"?"":v==="S"?"M":rc?"R":v}</td>`;
+    const cls=(v?CL[v]:("e"+(dates[d].red?" redday":"")))+(st.man[i][d]?" man":"");
+    return `<td class="${cls}" data-w="${i}" data-d="${d}" title="${name} · ${dates[d].d}">${v==="X"?"":v==="S"?"M":v}</td>`;
    }).join("")+'</tr>';
  });
  const nd=dates.map((x,d)=>st.cells.reduce((p,r)=>p+(r[d]==="N"?1:0),0));
- h+='<tr><td title="Operai di notte nel giorno"><b>TOTALE NOTTI</b></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td>'+nd.map(n=>`<td style="font-weight:700;background:#eef2f7;color:#172536" title="${n} operai di notte">${n}</td>`).join("")+'</tr>';
+ h+='<tr><td title="Operai di notte nel giorno"><b>TOTALE NOTTI</b></td><td class="cnt"></td><td class="cnt"></td><td class="cnt"></td>'+nd.map(n=>`<td style="font-weight:700;background:#eef2f7;color:#172536" title="${n} operai di notte">${n}</td>`).join("")+'</tr>';
  $("schedule").innerHTML=h;
  
  renderMob();
@@ -636,7 +625,6 @@ function downloadPDF(){
  const text=(t,x,y,sz,bold,k)=>{o+=`BT /${bold?"F2":"F1"} ${sz} Tf ${col(k)} rg ${f(x)} ${f(PH-y)} Td (${esc(t)}) Tj ET\n`;};
  const ctext=(t,x,w,y,sz,bold,k)=>text(t,x+(w-tw(t,sz))/2,y,sz,bold,k);
  const BLACK=[20,30,40],WHITE=[255,255,255];
- const cfp=compFlags(cells,dates);
  const fills={N:[88,166,92],R:[40,120,189],S:[245,214,78],F:[255,133,133],X:[230,78,78],M:WHITE,"":WHITE};
  text("TURNI - "+names[st.m].toUpperCase()+" "+st.y,M,M+16,18,true,BLACK);text("Manutenzione stradale - San Giovanni e Staffetta",M+tw("TURNI - "+names[st.m].toUpperCase()+" "+st.y,18)+14,M+16,8,false,[90,104,119]);
  const xs=[M,M+nameW,M+nameW+cntW,M+nameW+2*cntW,M+nameW+3*cntW];
@@ -648,9 +636,9 @@ function downloadPDF(){
   rect(M,y,nameW+3*cntW,rowH,[245,247,249]);
   text(name,M+4,base,8,true,BLACK);
   cells[i].forEach((v,d)=>{
-   const cx=xs[4]+d*dayW;const rc=cfp[i][d];rect(cx,y,dayW,rowH,rc?[220,235,248]:v===""&&dates[d].red?[251,227,227]:(fills[v]||WHITE));
-   const t=v==="X"?"":v==="S"?"M":rc?"R":v;
-   if(t)ctext(t,cx,dayW,base,8,v!=="M"&&v!=="S",rc?[40,120,189]:v==="R"?WHITE:BLACK);
+   const cx=xs[4]+d*dayW;rect(cx,y,dayW,rowH,v===""&&dates[d].red?[251,227,227]:(fills[v]||WHITE));
+   const t=v==="X"?"":v==="S"?"M":v;
+   if(t)ctext(t,cx,dayW,base,8,v!=="M"&&v!=="S",v==="R"?WHITE:BLACK);
   });
  });
  const tx=nameW+3*cntW+D*dayW,ty=top+headH+W*rowH;
@@ -707,19 +695,19 @@ function renderMob(){
  let h=`<div class="mhead"><div class="mm">${names[st.m]} <b>${st.y}</b></div><div class="mchips"><span>${D} giorni</span><span>${wk} lavorativi</span></div></div>`;
  h+=`<div class="seg"><button data-mm="op" class="${mobMode==="op"?"on":""}">Per operatore</button><button data-mm="day" class="${mobMode==="day"?"on":""}">Per giorno</button></div>`;
  if(mobMode==="op"){
-  const row=st.cells[mobOp],cfm=compFlags(st.cells,dates)[mobOp],off=(dates[0].w+6)%7;
+  const row=st.cells[mobOp],off=(dates[0].w+6)%7;
   h+=`<select id="mobOpSel">${all.map((n,i)=>`<option value="${i}"${i===mobOp?" selected":""}>${n} · ${i<SG.length?"San Giovanni":"Staffetta"}</option>`).join("")}</select>`;
-  h+=`<div class="mstats"><div><b>${c.nights[mobOp]}</b>notti</div><div><b>${c.work[mobOp]}</b>giorni lav.</div><div><b>${c.redN[mobOp]}</b>notti fest.</div><div><b>${c.comp[mobOp]}</b>riposo comp.</div><div><b>${c.ferie[mobOp]}</b>ferie</div></div>`;
+  h+=`<div class="mstats"><div><b>${c.nights[mobOp]}</b>notti</div><div><b>${c.work[mobOp]}</b>giorni lav.</div><div><b>${c.redN[mobOp]}</b>notti fest.</div><div><b>${c.ferie[mobOp]}</b>ferie</div></div>`;
   h+='<div class="mgrid">'+["L","M","M","G","V","S","D"].map(x=>`<i>${x}</i>`).join("")+"<u></u>".repeat(off);
-  dates.forEach((x,d)=>{const rc=cfm[d],v=row[d],k=rc?["R","mC"]:(MC[v]||["",""]);h+=`<div class="mc ${k[1]}${x.red&&!v?" rd":""}${x.hol?" hl":""}"><small>${x.d}</small><b>${k[0]}</b></div>`;});
-  h+='</div><div class="mleg"><span>N notte</span><span>R riposo</span><span>R chiaro = riposo comp.</span><span>M mattina</span><span>F ferie</span><span>rosso = non lavorato</span></div>';
+  dates.forEach((x,d)=>{const v=row[d],k=MC[v]||["",""];h+=`<div class="mc ${k[1]}${x.red&&!v?" rd":""}${x.hol?" hl":""}"><small>${x.d}</small><b>${k[0]}</b></div>`;});
+  h+='</div><div class="mleg"><span>N notte</span><span>R riposo</span><span>M mattina</span><span>F ferie</span><span>rosso = non lavorato</span></div>';
  }else{
   const x=dates[mobDay],hn=autoHolidays(st.y,st.m).get(x.d);
-  const cfd=compFlags(st.cells,dates),g=codes=>all.map((n,w)=>[n,w]).filter(([n,w])=>codes.includes(st.cells[w][mobDay]));
+  const g=codes=>all.map((n,w)=>[n,w]).filter(([n,w])=>codes.includes(st.cells[w][mobDay]));
   const night=g(["N"]),sec=(cl,t,a)=>`<div class="dsec ${cl}"><h4><span>${t}</span><span>${a.length}</span></h4><div class="chips">${a.length?a.map(([n])=>`<span class="chip">${n}</span>`).join(""):"—"}</div></div>`;
   h+=`<div class="dnav"><button data-md="-1">‹</button><div>${DOWF[x.w]} ${x.d}${hn?`<small>${hn}</small>`:""}</div><button data-md="1">›</button></div>`;
   h+=`<div class="bignight">Operai di notte<b>${night.length}</b></div>`;
-  h+=sec("n","Notte · San Giovanni",night.filter(([n,w])=>w<SG.length))+sec("n","Notte · Staffetta",night.filter(([n,w])=>w>=SG.length))+sec("","Mattina",g(["M","S"]))+sec("r","Riposo post-notte",g(["R"]))+sec("r","Riposo compensativo",all.map((n,w)=>[n,w]).filter(([n,w])=>cfd[w][mobDay]))+sec("f","Ferie",g(["F"]));
+  h+=sec("n","Notte · San Giovanni",night.filter(([n,w])=>w<SG.length))+sec("n","Notte · Staffetta",night.filter(([n,w])=>w>=SG.length))+sec("","Mattina",g(["M","S"]))+sec("r","Riposo post-notte",g(["R"]))+sec("f","Ferie",g(["F"]));
  }
  h+='<div class="mfoot"><p class="note">I turni sono sincronizzati automaticamente con il PC: vedi sempre gli stessi dati. Le modifiche si vedono sugli altri dispositivi in pochi secondi.</p></div>';
  $("mobBody").innerHTML=h;
